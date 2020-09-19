@@ -1,0 +1,6 @@
+node_modules/
+public/loaderio*
+*.swp
+test-*.js
+.vscode
+.idea

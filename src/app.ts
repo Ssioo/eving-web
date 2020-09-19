@@ -1,16 +1,16 @@
-const express = require('express')
-const path = require('path')
-const bodyParser = require('body-parser')
-const ip = require('ip')
-const fs = require('fs').promises
-const cookieParser = require('cookie-parser')
+import express from 'express'
+import path = require('path')
+import bodyParser = require('body-parser')
+import ip = require('ip')
+import cookieParser = require('cookie-parser')
+import { promises } from "fs";
 
 require('dotenv').config()
 
-const app = express()
+import user from './routes/user/user'
+import iot from './routes/iot/iot'
 
-const user = require('./user/user')
-const iot = require('./iot/iot')
+const app = express()
 
 app.use(bodyParser.json())
 
@@ -27,7 +27,7 @@ app.use((req, res, next) => {
 })
 
 app.get('/', (req, res) => {
-    fs.readFile(__dirname + '/views/index.html')
+    promises.readFile(__dirname + '/views/index.html')
         .then((contents) => {
             res.setHeader("Content-Type", "text/html")
             res.writeHead(200)
@@ -37,12 +37,13 @@ app.get('/', (req, res) => {
             res.end(e)
         })
 })
+
 app.use('/users', user)
 app.use('/iot', iot)
 
 /// catch 404 and forwarding to error handler
 app.use((req, res, next) => {
-    const err = new Error('Not Found')
+    let err: any = new Error('Not Found')
     err.status = 404
     next(err)
 })
@@ -66,7 +67,6 @@ app.use((err, req, res, next) => {
 
 app.listen(process.env.PORT,() => {
     console.log(`Server is Running on: http://${ip.address()}:${process.env.PORT}`)
-    //logCollector.emit('restart', { ip: ip.address() })
 })
 
 module.exports = app

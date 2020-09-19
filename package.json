@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon — exec ts-node src/app.js"
+    "start": "nodemon --exec 'ts-node' src/app.ts"
   },
   "keywords": [],
   "author": "",
@@ -32,6 +32,9 @@
     "@babel/core": "^7.11.6",
     "@babel/node": "^7.10.5",
     "@babel/runtime": "^7.11.2",
+    "@types/cookie-parser": "^1.4.2",
+    "@types/ip": "^1.1.0",
+    "@types/node": "^14.11.1",
     "babel-jest": "^26.3.0",
     "cookie-parser": "^1.4.5",
     "ip": "^1.1.5",

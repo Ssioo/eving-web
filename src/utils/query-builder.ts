@@ -1,11 +1,10 @@
-const pool = require('./dbms')
+import { pool } from './dbms'
 
-const query = async (fn) => {
+export const query = async (fn: any) => {
     try {
         const connection = await pool.getConnection(async conn => conn)
         try {
-            const result = await fn(connection)
-            return result
+            return await fn(connection)
         } catch (err) {
             connection.release()
             throw new Error(err)
@@ -14,5 +13,3 @@ const query = async (fn) => {
         throw new Error(err)
     }
 }
-
-module.exports = query

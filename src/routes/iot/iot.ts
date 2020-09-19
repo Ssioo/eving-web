@@ -1,5 +1,6 @@
-const express = require('express')
-const router = express.Router()
+import { Router } from 'express'
+
+const router = Router()
 
 router.get('/devices', (req, res) => {
     const token = req.headers['x-access-token']
@@ -17,4 +18,4 @@ router.delete('/devices/:deviceId', (req, res) => {
     res.send('devices')
 })
 
-module.exports = router
+export = router

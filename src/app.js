@@ -1,6 +1,8 @@
 const express = require('express')
 const path = require('path')
 const bodyParser = require('body-parser')
+const ip = require('ip')
+const fs = require('fs').promises
 const cookieParser = require('cookie-parser')
 
 require('dotenv').config()
@@ -11,8 +13,10 @@ const user = require('./user/user')
 const iot = require('./iot/iot')
 
 app.use(bodyParser.json())
+
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(cookieParser())
+
 app.use(express.static(path.join(__dirname, '../public')))
 
 app.use((req, res, next) => {
@@ -22,6 +26,17 @@ app.use((req, res, next) => {
     next()
 })
 
+app.get('/', (req, res) => {
+    fs.readFile(__dirname + '/views/index.html')
+        .then((contents) => {
+            res.setHeader("Content-Type", "text/html")
+            res.writeHead(200)
+            res.end(contents)
+        }).catch((e) => {
+            res.writeHead(500)
+            res.end(e)
+        })
+})
 app.use('/users', user)
 app.use('/iot', iot)
 
@@ -49,7 +64,8 @@ app.use((err, req, res, next) => {
     //res.sendStatus(err.status || 500)
 })
 
-app.listen(process.env.PORT, () => {
+app.listen(process.env.PORT,() => {
+    console.log(`Server is Running on: http://${ip.address()}:${process.env.PORT}`)
     //logCollector.emit('restart', { ip: ip.address() })
 })
 

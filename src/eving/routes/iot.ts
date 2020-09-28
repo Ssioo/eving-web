@@ -1,13 +1,13 @@
 import { Router } from 'express'
-import {decodeJwt} from "../../utils/auth";
+import {decodeEvingJwt} from "../../utils/auth";
 import {sendErr} from "../../utils/response-handler";
-import {ioTDao} from "../../daos/IoTDao";
+import {ioTDao} from "../daos/IoTDao";
 
 const router = Router()
 
 router.get('/devices', async (req, res) => {
     try {
-        const { userId } = decodeJwt(req)
+        const { userId } = decodeEvingJwt(req)
         const deviceList = await ioTDao.getAllDeviceByUserId(userId)
         res.send({
             code: 200,

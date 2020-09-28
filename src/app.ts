@@ -7,8 +7,8 @@ import { promises } from "fs";
 
 require('dotenv').config()
 
-import user from './routes/user/user'
-import iot from './routes/iot/iot'
+import evingRouter from './eving/index'
+import meariRouter from './meari/index'
 
 const app = express()
 
@@ -38,8 +38,8 @@ app.get('/', (req, res) => {
         })
 })
 
-app.use('/users', user)
-app.use('/iot', iot)
+app.use('/eving', evingRouter)
+app.use('/meari', meariRouter)
 
 /// catch 404 and forwarding to error handler
 app.use((req, res, next) => {

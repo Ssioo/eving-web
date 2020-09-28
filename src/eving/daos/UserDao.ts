@@ -1,5 +1,6 @@
-import { BaseDao } from './BaseDao'
 import {User} from "../models/user";
+import {BaseDao} from "../../utils/base-dao";
+import {DataBase} from "../../utils/dbms";
 
 class UserDao extends BaseDao {
     insertUser(name: string, email: string, pwd: string, role: string = 'common') {
@@ -23,4 +24,4 @@ class UserDao extends BaseDao {
     }
 }
 
-export const userDao = new UserDao()
+export const userDao = new UserDao(DataBase.toName(DataBase.EVING))

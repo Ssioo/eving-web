@@ -1,6 +1,6 @@
-import {userDao} from '../../daos/UserDao'
+import {userDao} from '../daos/UserDao'
 import {Router} from 'express'
-import {encodeJwt} from '../../utils/auth'
+import {encodeEvingJwt} from '../../utils/auth'
 import {ClientError, ClientErrorType, sendErr, sendRes} from '../../utils/response-handler'
 
 
@@ -48,7 +48,7 @@ router.post('/token', async (req, res) => {
         res.send({
             code: 200,
             data: {
-                token: encodeJwt({ userId: result.id })
+                token: encodeEvingJwt({ userId: result.id })
             }
         })
     } catch (e) {

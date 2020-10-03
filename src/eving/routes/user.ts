@@ -1,7 +1,7 @@
 import {userDao} from '../daos/UserDao'
 import {Router} from 'express'
-import {encodeEvingJwt} from '../../utils/auth'
-import {ClientError, ClientErrorType, sendErr, sendRes} from '../../utils/response-handler'
+import {decodeEvingJwt, encodeEvingJwt} from '../../utils/auth'
+import {ClientError, ClientErrorType, sendErr} from '../../utils/response-handler'
 
 
 const router = Router()
@@ -21,12 +21,15 @@ router.get('/', async (req, res) => {
 
 router.post('/', async (req, res) => {
     try {
-        const { name, email, pwd } = req.body
-        if (/^[A-Za-zㄱ-ㅎㅏ-ㅣ가-힣]{4,20}$/.exec(name) || /^[A-Za-z0-9]{6,12}$/.exec(email) || /^[A-Za-z0-9]{8,20}/)
+        const { email, pwd, gender } = req.body
+        if (!/^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/.exec(email)
+            || !/^[A-Za-z0-9]{4,20}$/.exec(pwd)
+            || !/^[12]$/.exec(gender)
+        )
             throw new ClientError(ClientErrorType.INVALID_DATA)
-        const result = await userDao.getActiveUserByEmailPwd(email, pwd)
+        const result = await userDao.getActiveUserByEmail(email)
         if (result) throw new ClientError(ClientErrorType.DUPLICATE)
-        await userDao.insertUser(name, email, pwd)
+        await userDao.insertUser(email, pwd, gender)
         res.send({
             code: 200,
             data: {
@@ -49,6 +52,23 @@ router.post('/token', async (req, res) => {
             code: 200,
             data: {
                 token: encodeEvingJwt({ userId: result.id })
+            }
+        })
+    } catch (e) {
+        console.log(e)
+        sendErr(res, e)
+    }
+})
+
+router.get('/token/verify', async (req, res) => {
+    try {
+        const { userId } = decodeEvingJwt(req)
+        const result = await userDao.getActiveUserById(userId)
+        if (!result) throw new ClientError(ClientErrorType.NO_DATA)
+        res.send({
+            code: 200,
+            data: {
+                success: true
             }
         })
     } catch (e) {

@@ -33,7 +33,7 @@ export class BaseDao {
         }, this.db)
     }
 
-    protected delete (queryString: string, args = []) {
+    protected delete (queryString: string, args: any[] = []) {
         return query(async (conn: any) => {
             await conn.query(queryString, args)
         }, this.db)

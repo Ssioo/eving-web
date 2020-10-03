@@ -1,10 +1,13 @@
 import {BaseDao} from "../../utils/base-dao";
 import {DataBase} from "../../utils/dbms";
-import {ContentsRow} from "../models/contents";
+import {Contents} from "../models/contents";
 
 class ContentsDao extends BaseDao {
-    getAllActiveContents(): Promise<ContentsRow[] | undefined> {
-        const queryStr = 'SELECT * FROM CONTENTS_TB WHERE deleted_at IS NULL'
+    getAllActiveContents(): Promise<Contents[] | undefined> {
+        const queryStr = 'SELECT C.id, C.title, C.description, C.video, C.video_time, C.thumbnail, C.author_id, U.email AS author_email, C.created_at ' +
+            'FROM CONTENTS_TB AS C ' +
+            'LEFT JOIN USER_TB AS U ON U.id = C.author_id ' +
+            'WHERE C.deleted_at IS NULL'
         return this.getAll(queryStr)
     }
 }

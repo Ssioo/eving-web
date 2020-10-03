@@ -21,3 +21,18 @@ export interface Contents {
     author_email: string
     created_at: string
 }
+
+export interface AdsRow {
+    id: number
+    img: string
+    link: string | null
+    priority: number
+    created_at: string
+    expired_at: string | null
+}
+
+export interface Ads {
+    id: number
+    img: string
+    link: string | null
+}

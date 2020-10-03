@@ -1,6 +1,6 @@
 import {BaseDao} from "../../utils/base-dao";
 import {DataBase} from "../../utils/dbms";
-import {Contents} from "../models/contents";
+import {Ads, Contents} from "../models/contents";
 
 class ContentsDao extends BaseDao {
     getAllActiveContents(): Promise<Contents[] | undefined> {
@@ -8,6 +8,10 @@ class ContentsDao extends BaseDao {
             'FROM CONTENTS_TB AS C ' +
             'LEFT JOIN USER_TB AS U ON U.id = C.author_id ' +
             'WHERE C.deleted_at IS NULL'
+        return this.getAll(queryStr)
+    }
+    getAllActiveAds(): Promise<Ads[] | undefined> {
+        const queryStr = 'SELECT id, img, link FROM ADS_TB WHERE expired_at >= NOW() ORDER BY priority DESC'
         return this.getAll(queryStr)
     }
 }

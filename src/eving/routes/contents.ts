@@ -20,4 +20,17 @@ router.get('/',async (req, res) => {
     }
 })
 
+router.get('/ads', async (req, res) => {
+    try {
+        const result = await contentsDao.getAllActiveAds()
+        res.send({
+            code: 200,
+            data: result ?? []
+        })
+    } catch (e) {
+        console.log(e)
+        sendErr(res, e)
+    }
+})
+
 export = router

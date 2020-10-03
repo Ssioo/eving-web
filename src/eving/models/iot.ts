@@ -21,5 +21,5 @@ export interface IotDeviceRow {
     user_id: number
     type: IotType
     created_at: string
-    deleted_at: string
+    deleted_at: string | null
 }

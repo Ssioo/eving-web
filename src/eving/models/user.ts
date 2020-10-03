@@ -27,5 +27,5 @@ export interface UserRow {
     role: Role
     status: UserStatus
     created_at: string
-    deleted_at: string
+    deleted_at: string | null
 }

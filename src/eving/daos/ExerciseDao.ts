@@ -4,8 +4,8 @@ import {DataBase} from "../../utils/dbms";
 
 class ExerciseDao extends BaseDao {
 
-    getAllExercisesSummaryByUserId(userId: number): Promise<Exercise[]> {
-        const queryStr = 'SELECT * FROM EXERCISE_TB WHERE user_id = ? AND deleted_at IS NOT NULL'
+    getAllExercisesSummaryByUserId(userId: number): Promise<Exercise[] | undefined> {
+        const queryStr = 'SELECT * FROM EXERCISE_TB WHERE user_id = ? AND deleted_at IS NULL'
         return this.getAll(queryStr, [userId])
     }
 

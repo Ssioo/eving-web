@@ -10,7 +10,7 @@ class ExerciseDao extends BaseDao {
     }
 
     getExerciseDataByExerciseId(exId: number, userId: number): Promise<ExerciseDataRow[] | undefined> {
-        const queryStr = 'SELECT acc_x, acc_y, acc_z, gyro_x, gyro_y, gyro_z, tilt, set_idx ' +
+        const queryStr = 'SELECT acc_x, acc_y, acc_z, gyro_x, gyro_y, gyro_z, mag_x, mag_y, mag_z, tilt, set_idx ' +
             'FROM EXERCISE_DATA_TB AS D LEFT JOIN EXERCISE_TB AS E ON D.exercise_id = E.id ' +
             'WHERE E.id = ? AND E.deleted_at IS NULL AND E.user_id = ?'
         return this.getAll(queryStr, [exId, userId])

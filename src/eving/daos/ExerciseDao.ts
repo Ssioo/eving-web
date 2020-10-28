@@ -22,7 +22,9 @@ class ExerciseDao extends BaseDao {
     }
 
     createNewExerciseSensorData(exerciseId: number, sensors: Array<number[]>, setIdx: number) {
-        const queryStr = 'INSERT INTO EXERCISE_DATA_TB (exercise_id, acc_x, acc_y, acc_z, gyro_x, gyro_y, gyro_z, tilt, set_idx) VALUES ?'
+        const queryStr = 'INSERT INTO EXERCISE_DATA_TB ' +
+            '(exercise_id, acc_x, acc_y, acc_z, gyro_x, gyro_y, gyro_z, tilt, mag_x, mag_y, mag_z, set_idx) ' +
+            'VALUES ?'
         return this.insert(queryStr, [sensors.map((item) => [exerciseId, ...item, setIdx])])
     }
 }

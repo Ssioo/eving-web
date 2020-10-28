@@ -16,5 +16,8 @@ export interface ExerciseDataRow {
     gyro_y: number
     gyro_z: number
     tilt: number
+    mag_x: number
+    mag_y: number
+    mag_z: number
     set_idx: number
 }

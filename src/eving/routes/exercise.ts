@@ -44,14 +44,14 @@ router.post('/data/:exerciseId',async (req, res) => {
     try {
         const { userId } = decodeEvingJwt(req)
         const { exerciseId } = req.params
-        const { sensors } = req.body
+        const { sensors, avgAcc, avgGyro, avgTilt } = req.body
         const isUserValid = await userDao.getActiveUserById(userId)
         if (!isUserValid) throw new ClientError(ClientErrorType.NO_DATA)
         if (!exerciseId) throw new ClientError(ClientErrorType.MISSING_PARAMS)
         await sensors.reduce(async (acc, item, idx) => {
             let promise = await acc.then()
             const queryRes = await exerciseDao.createNewExerciseSensorData(Number(exerciseId), item, idx)
-            return Promise.resolve([ ...promise, queryRes])
+            return Promise.resolve([...promise, queryRes])
         }, Promise.resolve([]))
         res.send({
             code: 200,
@@ -73,7 +73,6 @@ router.get('/data/:exerciseId', async (req, res) => {
         const { exerciseId } = req.params
         if (!exerciseId) throw new ClientError(ClientErrorType.MISSING_PARAMS)
         const result = await exerciseDao.getExerciseDataByExerciseId(Number(exerciseId), userId);
-
         res.send({
             code: 200,
             data: result ?? []

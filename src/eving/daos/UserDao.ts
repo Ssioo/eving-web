@@ -30,7 +30,7 @@ class UserDao extends BaseDao {
 
     setUserInactive(userId: number) {
         const queryStr = 'UPDATE USER_TB SET status = "INACTIVE", deleted_at = NOW() ' +
-            'WHERE user_id = ? AND deleted_at IS NULL'
+            'WHERE id = ? AND deleted_at IS NULL'
         return this.update(queryStr, [userId])
     }
 }

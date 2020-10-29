@@ -27,6 +27,12 @@ class UserDao extends BaseDao {
         const queryStr = 'SELECT * FROM USER_TB WHERE email = ? AND status = ?'
         return this.getOne(queryStr, [email, 'ACTIVE'])
     }
+
+    setUserInactive(userId: number) {
+        const queryStr = 'UPDATE USER_TB SET status = "INACTIVE", deleted_at = NOW() ' +
+            'WHERE user_id = ? AND deleted_at IS NULL'
+        return this.update(queryStr, [userId])
+    }
 }
 
 export const userDao = new UserDao(DataBase.toName(DataBase.EVING))

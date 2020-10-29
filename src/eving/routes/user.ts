@@ -77,4 +77,20 @@ router.get('/token/verify', async (req, res) => {
     }
 })
 
+router.delete('/', async (req, res) => {
+    try {
+        const { userId } = decodeEvingJwt(req)
+        const result = await userDao.setUserInactive(userId)
+        res.send({
+            code: 200,
+            data: {
+                success: true
+            }
+        })
+    } catch (e) {
+        console.log(e)
+        sendErr(res, e)
+    }
+})
+
 export = router

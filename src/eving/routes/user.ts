@@ -42,6 +42,21 @@ router.post('/', async (req, res) => {
     }
 })
 
+router.get('/info', async (req, res) => {
+    try {
+        const { userId } = decodeEvingJwt(req)
+        const result = await userDao.getUserInfo(userId)
+        if (!result) throw new ClientError(ClientErrorType.NO_DATA)
+        res.send({
+            code: 200,
+            data: result
+        })
+    } catch (e) {
+        console.log(e)
+        sendErr(res, e)
+    }
+})
+
 router.post('/token', async (req, res) => {
     try {
         const { email, pwd } = req.body

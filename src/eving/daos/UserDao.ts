@@ -13,6 +13,11 @@ class UserDao extends BaseDao {
         return this.getAll(queryStr)
     }
 
+    getUserInfo(userId: number): Promise<UserRow> {
+        const queryStr = 'SELECT * FROM USER_TB WHERE id = ? AND deleted_at IS NULL'
+        return this.getOne(queryStr, [userId])
+    }
+
     getActiveUserById(userId: number): Promise<UserRow | undefined> {
         const queryStr = 'SELECT * FROM USER_TB WHERE id = ? AND status = ?'
         return this.getOne(queryStr, [userId, 'ACTIVE'])

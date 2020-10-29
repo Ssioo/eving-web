@@ -27,6 +27,16 @@ class ExerciseDao extends BaseDao {
             'VALUES ?'
         return this.insert(queryStr, [sensors.map((item) => [exerciseId, ...item, setIdx])])
     }
+
+    deleteExercise(exerciseId: number, userId: number) {
+        const queryStr = 'UPDATE EXERCISE_TB SET deleted_at = NOW() WHERE id = ? AND user_id = ?'
+        return this.update(queryStr, [exerciseId, userId])
+    }
+
+    setExerciseTitle(title: string, exerciseId: number) {
+        const queryStr = 'UPDATE EXERCISE_TB SET title = ? WHERE id = ?'
+        return this.update(queryStr, [title, exerciseId])
+    }
 }
 
 export const exerciseDao = new ExerciseDao(DataBase.toName(DataBase.EVING))

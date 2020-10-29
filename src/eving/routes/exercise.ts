@@ -83,4 +83,45 @@ router.get('/data/:exerciseId', async (req, res) => {
     }
 })
 
+router.put('/title/:exerciseId', async (req, res) => {
+    try {
+        const { userId } = decodeEvingJwt(req)
+        const isUserValid = await userDao.getActiveUserById(userId)
+        if (!isUserValid) throw new ClientError(ClientErrorType.NO_DATA)
+        const { exerciseId } = req.params
+        const { title } = req.body
+        if (!exerciseId || !title) throw new ClientError(ClientErrorType.MISSING_PARAMS)
+        await exerciseDao.setExerciseTitle(title, Number(exerciseId))
+        res.send({
+            code: 200,
+            data: {
+                success: true
+            }
+        })
+    } catch (e) {
+        console.log(e)
+        sendErr(res, e)
+    }
+})
+
+router.delete('/:exerciseId', async (req, res) => {
+    try {
+        const { userId } = decodeEvingJwt(req)
+        const isUserValid = await userDao.getActiveUserById(userId)
+        if (!isUserValid) throw new ClientError(ClientErrorType.NO_DATA)
+        const { exerciseId } = req.params
+        if (!exerciseId) throw new ClientError(ClientErrorType.MISSING_PARAMS)
+        await exerciseDao.deleteExercise(Number(exerciseId), userId)
+        res.send({
+            code: 200,
+            data: {
+                success: true
+            }
+        })
+    } catch (e) {
+        console.log(e)
+        sendErr(res, e)
+    }
+})
+
 export = router
